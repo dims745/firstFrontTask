@@ -1,61 +1,53 @@
 let componentInfo = {
     x: 7,
-    y: 13
+    y: 5
 }
 
 function renderComponent(action, target) {
+    changeDisplay('none');
     let root = document.querySelector('.component');
+    root.innerHTML = '';
+    root.style.gridTemplateColumns = '';
     if(action !== 'nothing') {
         if(action === 'add') {
-            if(target === 'row') componentInfo.y++;
-            else componentInfo.x++;
+            if(target === 'row') componentInfo.x++;
+            else componentInfo.y++;
         }
         else {
-            if(target === 'row') componentInfo.y--;
-            else componentInfo.x--;
+            if(target === 'row') componentInfo.x--;
+            else componentInfo.y--;
         }
     }
-    root.innerHTML = '';
-    root.style.gridTemplateColumns = '1fr 1fr';
-
-    addDeletingColumns(root, true);
-
-    for(let i = 0; i < componentInfo.y; i++) {
-        addWite(root, 'sub', 'row');
-        for(let j = 0; j < componentInfo.x; j++) {
+    
+    for(let i = 0; i < componentInfo.x; i++) {
+        for(let j = 0; j < componentInfo.y; j++) {
             root.innerHTML += 
             `<div
                 class="square"
-                onmouseover="console.log('${i} ' + '${j}')"
+                onmouseover="setSub(${i}, ${j})"
             ></div>`;
         }
-        addWite(root, 'add', 'row');
     }
 
-    addDeletingColumns(root, false);
+    for(let i = 0; i < componentInfo.y; i++) {
+        root.style.gridTemplateColumns += ' 1fr';
+    }
 
-}
-function addWite(root, action, target) {
-    root.innerHTML += `
-    <div 
-        class="square2"
-        onclick="renderComponent('${action}', '${target}')"
-    ></div>`;
+    let addColumn = document.getElementById('addColumn');
+    let addRow = document.getElementById('addRow');
+    addColumn.style.left = root.offsetWidth + 68 + 'px';
+    addRow.style.top = root.offsetHeight + 68 + 'px';
 }
 
-function addDeletingColumns(root, isFirst) {
+function setSub(x, y) {
+    changeDisplay('block');
+    subColumn.style.left = 70 + 52 * y + 'px';
+    subRow.style.top = 70 + 52 * x + 'px';
+}
 
-    addWite(root, 'nothing', 'column');
-
-    for(let j = 0; j < componentInfo.x; j++) {
-        addWite(root, isFirst ? 'sub' : 'add', 'column');
-    }
-
-    addWite(root, 'nothing', 'column');
-
-    if(isFirst){
-        for(let j = 0; j < componentInfo.x; j++) {
-            root.style.gridTemplateColumns += ' 1fr';
-        }
-    }
+function changeDisplay(display) {
+    let subColumn = document.getElementById('subColumn');
+    let subRow = document.getElementById('subRow');
+    subColumn.style.display = display;
+    subRow.style.display = display;
 }
