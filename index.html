@@ -9,7 +9,43 @@
         <link rel="stylesheet" href="index.css"/>
     </head>
     <body onload="renderComponent()">
-        <div class="component">
+        <div id="root">
+
+            <div
+                id="subColumn"
+                class="modSquare sub"
+                onclick="renderComponent('sub', 'column')"
+                onmouseout="changeDisplay('none')"
+                onmouseover="changeDisplay('block')"
+            >-</div>
+
+            <div
+                id="subRow"
+                class="modSquare sub"
+                onclick="renderComponent('sub', 'row')"
+                onmouseout="changeDisplay('none')"
+                onmouseover="changeDisplay('block')"
+            >-</div>
+
+            <div
+                id="addColumn"
+                class="modSquare add"
+                onclick="renderComponent('add', 'column')"
+                onmouseout="changeDisplay('none')"
+                onmouseover="changeDisplay('block')"
+            >+</div>
+
+            <div
+                id="addRow"
+                class="modSquare add"
+                onclick="renderComponent('add', 'row')"
+                onmouseout="changeDisplay('none')"
+                onmouseover="changeDisplay('block')"
+            >+</div>
+
+            <div onmouseout="changeDisplay('none')">
+                <div class="component" ></div>
+            </div>
         </div>
     </body>
 </html>

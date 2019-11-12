@@ -1,4 +1,7 @@
 .component {
+    position: relative;
+    top: 60px;
+    left: 60px;
     display: grid;
     border: 1px solid gray;
     width: fit-content;
@@ -6,12 +9,33 @@
 .square {
     width: 50px;
     height: 50px;
-    margin: 5px;
-    background-color: royalblue;
+    margin: 1px;
+    background-color: #419fe4;
 }
-.square2 {
+#root {
+    width: fit-content;
+}
+.modSquare {
+    position: absolute;
     width: 50px;
     height: 50px;
-    margin: 5px;
-    background-color: white;
+}
+.add {
+    background-color: #f29b01;
+}
+.sub {
+    display: none;
+    background-color:#a72601;
+}
+#addColumn {
+    top: 70px;
+}
+#addRow {
+    left: 70px;
+}
+#subColumn {
+    top: 18px;
+}
+#subRow {
+    left: 18px;
 }
