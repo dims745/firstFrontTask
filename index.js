@@ -1,10 +1,18 @@
-let componentInfo = {
-    x: 7,
-    y: 5
+const componentInfo = {
+    x: 4,
+    y: 4
+}
+const coords = {
+    x: 0,
+    y: 0,
+    setCoords: ()=>{
+        coords.x = event.pageX;
+        coords.y = event.pageY;
+    }
 }
 
 function renderComponent(action, target) {
-    changeDisplay('none');
+    setDisplay('none');
     let root = document.querySelector('.component');
     root.innerHTML = '';
     root.style.gridTemplateColumns = '';
@@ -40,14 +48,31 @@ function renderComponent(action, target) {
 }
 
 function setSub(x, y) {
-    changeDisplay('block');
-    subColumn.style.left = 70 + 52 * y + 'px';
-    subRow.style.top = 70 + 52 * x + 'px';
+    changeDisplay();
+    subColumn.style.left = 68 + 52 * y + 'px';
+    subRow.style.top = 68 + 52 * x + 'px';
 }
 
-function changeDisplay(display) {
-    let subColumn = document.getElementById('subColumn');
-    let subRow = document.getElementById('subRow');
-    subColumn.style.display = display;
-    subRow.style.display = display;
+function changeDisplay() {
+    let prevElement = document.elementFromPoint(coords.x, coords.y);
+    setTimeout(()=>{
+        let t = document.elementFromPoint(coords.x, coords.y);
+        if(t.classList[0]!=='modSquare' && t.classList[0]!== 'component' && t.classList[0]!== 'square') 
+            display = 'none';
+        else
+            if(t.classList[0]==='modSquare'){
+                if(!prevElement.classList[0])
+                    display = 'none';
+                else
+                    display = 'flex';
+            }
+            else
+                display = 'flex';
+            setDisplay(display);
+    },100);
+}
+
+function setDisplay(display) {
+    document.getElementById('subColumn').style.display = componentInfo.y-1 ? display : 'none';
+    document.getElementById('subRow').style.display = componentInfo.x-1 ? display : 'none';
 }

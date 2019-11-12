@@ -16,26 +16,46 @@
     width: fit-content;
 }
 .modSquare {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     width: 50px;
     height: 50px;
+    color: cornsilk;
+    font-size: 26px;
+    cursor: pointer;
+    border: 2px solid white;
+}
+.modSquare:hover {
+    border: 2px solid #419fe4;
 }
 .add {
-    background-color: #f29b01;
+    transition: background-color 0.5s;
+    background-color: #f3a500;
+}
+.add:hover {
+    background-color: #f6c052;
 }
 .sub {
+    transition: background-color 0.5s, left 0.3s, top 0.3s;
     display: none;
-    background-color:#a72601;
+    background-color:#b22901;
+}
+.sub:hover {
+    background-color: #ca4c49;
 }
 #addColumn {
-    top: 70px;
+    top: 68px;
 }
 #addRow {
-    left: 70px;
+    left: 68px;
 }
 #subColumn {
-    top: 18px;
+    
+    top: 14px;
 }
 #subRow {
-    left: 18px;
+    
+    left: 14px;
 }
