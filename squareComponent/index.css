@@ -1,4 +1,4 @@
-.component {
+.squareBox {
     position: relative;
     top: 60px;
     left: 60px;
@@ -11,9 +11,6 @@
     height: 50px;
     margin: 1px;
     background-color: #419fe4;
-}
-#root {
-    width: fit-content;
 }
 .modSquare {
     display: flex;
