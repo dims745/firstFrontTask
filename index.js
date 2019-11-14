@@ -1,6 +1,8 @@
 const componentInfo = {
     x: 4,
-    y: 4
+    y: 4,
+    offsetLeft: document.querySelector('.component').offsetLeft,
+    offsetTop: document.querySelector('.component').offsetTop
 }
 const coords = {
     x: 0,
@@ -16,6 +18,7 @@ function renderComponent(action, target) {
     let root = document.querySelector('.component');
     root.innerHTML = '';
     root.style.gridTemplateColumns = '';
+
     if(action !== 'nothing') {
         if(action === 'add') {
             if(target === 'row') componentInfo.x++;
@@ -41,26 +44,24 @@ function renderComponent(action, target) {
         root.style.gridTemplateColumns += ' 1fr';
     }
 
-    let addColumn = document.getElementById('addColumn');
-    let addRow = document.getElementById('addRow');
-    addColumn.style.left = root.offsetWidth + 68 + 'px';
-    addRow.style.top = root.offsetHeight + 68 + 'px';
+    document.getElementById('addColumn').style.left = root.offsetWidth + componentInfo.offsetLeft + 'px';
+    document.getElementById('addRow').style.top = root.offsetHeight + componentInfo.offsetTop + 'px';
 }
 
 function setSub(x, y) {
     changeDisplay();
-    subColumn.style.left = 68 + 52 * y + 'px';
-    subRow.style.top = 68 + 52 * x + 'px';
+    subColumn.style.left = componentInfo.offsetLeft + 52 * y + 'px';
+    subRow.style.top = componentInfo.offsetTop + 52 * x + 'px';
 }
 
 function changeDisplay() {
     let prevElement = document.elementFromPoint(coords.x, coords.y);
     setTimeout(()=>{
-        let t = document.elementFromPoint(coords.x, coords.y);
-        if(t.classList[0]!=='modSquare' && t.classList[0]!== 'component' && t.classList[0]!== 'square') 
+        let elementOnCursor = document.elementFromPoint(coords.x, coords.y);
+        if(elementOnCursor.classList[0]!=='modSquare' && elementOnCursor.classList[0]!== 'component' && elementOnCursor.classList[0]!== 'square') 
             display = 'none';
         else
-            if(t.classList[0]==='modSquare'){
+            if(elementOnCursor.classList[0]==='modSquare'){
                 if(!prevElement.classList[0])
                     display = 'none';
                 else
