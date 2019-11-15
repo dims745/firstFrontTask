@@ -8,8 +8,8 @@ const coords = {
     x: 0,
     y: 0,
     setCoords: ()=>{
-        coords.x = event.pageX;
-        coords.y = event.pageY;
+        coords.x = event.clientX;
+        coords.y = event.clientY;
     }
 }
 
