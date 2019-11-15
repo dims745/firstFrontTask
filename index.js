@@ -1,8 +1,8 @@
 const componentInfo = {
     x: 4,
     y: 4,
-    offsetLeft: document.querySelector('.squareBox').offsetLeft,
-    offsetTop: document.querySelector('.squareBox').offsetTop
+    offsetLeft: 0,
+    offsetTop: 0
 }
 const coords = {
     x: 0,
@@ -14,6 +14,8 @@ const coords = {
 }
 
 function renderComponent(action, target) {
+    componentInfo.offsetLeft = document.querySelector('.squareBox').offsetLeft;
+    componentInfo.offsetTop = document.querySelector('.squareBox').offsetTop;
     setDisplay('none');
     let squareBox = document.querySelector('.squareBox');
     squareBox.innerHTML = '';
