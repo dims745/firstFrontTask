@@ -1,8 +1,8 @@
 const componentInfo = {
     x: 4,
     y: 4,
-    offsetLeft: document.querySelector('.component').offsetLeft,
-    offsetTop: document.querySelector('.component').offsetTop
+    offsetLeft: 0,
+    offsetTop: 0
 }
 const coords = {
     x: 0,
@@ -14,10 +14,12 @@ const coords = {
 }
 
 function renderComponent(action, target) {
+    componentInfo.offsetLeft = document.querySelector('.squareBox').offsetLeft;
+    componentInfo.offsetTop = document.querySelector('.squareBox').offsetTop;
     setDisplay('none');
-    let root = document.querySelector('.component');
-    root.innerHTML = '';
-    root.style.gridTemplateColumns = '';
+    let squareBox = document.querySelector('.squareBox');
+    squareBox.innerHTML = '';
+    squareBox.style.gridTemplateColumns = '';
 
     if(action !== 'nothing') {
         if(action === 'add') {
@@ -32,7 +34,7 @@ function renderComponent(action, target) {
     
     for(let i = 0; i < componentInfo.x; i++) {
         for(let j = 0; j < componentInfo.y; j++) {
-            root.innerHTML += 
+            squareBox.innerHTML += 
             `<div
                 class="square"
                 onmouseover="setSub(${i}, ${j})"
@@ -41,11 +43,18 @@ function renderComponent(action, target) {
     }
 
     for(let i = 0; i < componentInfo.y; i++) {
-        root.style.gridTemplateColumns += ' 1fr';
+        squareBox.style.gridTemplateColumns += ' 1fr';
     }
 
-    document.getElementById('addColumn').style.left = root.offsetWidth + componentInfo.offsetLeft + 'px';
-    document.getElementById('addRow').style.top = root.offsetHeight + componentInfo.offsetTop + 'px';
+    let addColumn = document.getElementById('addColumn');
+    let addRow = document.getElementById('addRow');
+
+    addColumn.style.left = squareBox.offsetWidth + componentInfo.offsetLeft + 'px';
+    addRow.style.top = squareBox.offsetHeight + componentInfo.offsetTop + 'px';
+    
+    let root = document.getElementById('squareComponent');
+    root.style.width = addColumn.offsetLeft + addColumn.offsetWidth + 20;
+    root.style.height = addRow.offsetTop + addRow.offsetHeight + 20;
 }
 
 function setSub(x, y) {
