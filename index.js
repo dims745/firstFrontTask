@@ -67,7 +67,7 @@ function changeDisplay() {
     let prevElement = document.elementFromPoint(coords.x, coords.y);
     setTimeout(()=>{
         let elementOnCursor = document.elementFromPoint(coords.x, coords.y);
-        if(elementOnCursor.classList[0]!=='modSquare' && elementOnCursor.classList[0]!== 'component' && elementOnCursor.classList[0]!== 'square') 
+        if(elementOnCursor.classList[0]!=='modSquare' && elementOnCursor.classList[0]!== 'squareBox' && elementOnCursor.classList[0]!== 'square') 
             display = 'none';
         else
             if(elementOnCursor.classList[0]==='modSquare'){
@@ -77,7 +77,14 @@ function changeDisplay() {
                     display = 'flex';
             }
             else
-                display = 'flex';
+                if(elementOnCursor.classList[0]==='squareBox'){
+                    if(!prevElement.classList[0])
+                    display = 'none';
+                else
+                    display = 'flex';
+                }
+                else
+                    display = 'flex';
             setDisplay(display);
     },100);
 }
