@@ -5,9 +5,8 @@ const defaultValue = {
 
 class SquareComponent extends HTMLElement {
 
-    component;
-
-    objectUnderMouse;
+    _component;
+    _timer;
 
     _createModSquare(action, target) {
         let elem = document.createElement('div');
@@ -17,51 +16,59 @@ class SquareComponent extends HTMLElement {
             let n;
             if(action === 'sub') n = -1;
             else n = 1;
-            if(target === 'column') this.x += n;
-            else this.y += n;
+            if(target === 'column') this._x += n;
+            else this._y += n;
+            this._setPosition(0, 0);
             this._renderBox();
+        }
+        elem.onmouseenter = ()=>{
+            clearTimeout(this._timer);
+        }
+        elem.onpointerleave = ()=>{
+            this._setVisibility('hidden');
         }
         return elem;
     }
 
     _setVisibility(value) {
-        this.component.querySelector('.sub.row').style.visibility = value;
-        this.component.querySelector('.sub.column').style.visibility = value;
-    }
-
-    _changeVisibility() {
-
+        let valueRow = this._y === 1 ? 'hidden' : value;
+        let valueColumn = this._x === 1 ? 'hidden' : value;
+        this._component.querySelector('.sub.row').style.visibility = valueRow;
+        this._component.querySelector('.sub.column').style.visibility = valueColumn;
     }
 
     _setPosition(x,y){
-        let square = this.component.querySelector('.square');
+        let square = this._component.querySelector('.square');
         let margin = parseInt(getComputedStyle(square).margin);
-        let subRow = this.component.querySelector('.sub.row');
-        let subColumn = this.component.querySelector('.sub.column');
+        let subRow = this._component.querySelector('.sub.row');
+        let subColumn = this._component.querySelector('.sub.column');
         subRow.style.marginTop = y * (square.offsetHeight + margin * 2) + 'px';
         subColumn.style.marginLeft = (x + 1) * (square.offsetWidth + margin * 2) + 2 + 'px';
+        this._setVisibility('visible');
     }
 
     _renderBox(){
-        let squareBox = this.component.querySelector('.squareBox');
+        this._setVisibility('hidden');
+        let squareBox = this._component.querySelector('.squareBox');
         squareBox.innerHTML = '';
-        let gridTC = '';
-        for(let i = 0; i < this.x; i++) {
-            for(let j = 0; j < this.y; j++) {
+        let gridTC;
+        for(let i = 0; i < this._y; i++) {
+            gridTC = '';
+            for(let j = 0; j < this._x; j++) {
                 let square = document.createElement('div');
                 square.classList.add('square');
                 square.onmouseover = ()=> this._setPosition(j, i);
                 squareBox.append(square);
+                gridTC += ' 1fr';
             }
-            gridTC += ' 1fr';
         }
         squareBox.style.gridTemplateColumns = gridTC;
     }
 
     connectedCallback() {
-        this.component = this.attachShadow({mode: 'closed'});
-        this.objectUnderMouse = this.component;
-        this.component.innerHTML = `<link rel="stylesheet" href="./index.css"/>`;
+        this._component = this.attachShadow({mode: 'closed'});
+        this.objectUnderMouse = this._component;
+        this._component.innerHTML = `<link rel="stylesheet" href="./squareComponent/index.css"/>`;
         let subColumn = this._createModSquare('sub', 'column');
         let addColumn = this._createModSquare('add', 'column');
         let subRow = this._createModSquare('sub', 'row');
@@ -72,49 +79,23 @@ class SquareComponent extends HTMLElement {
 
         let squareBox = document.createElement('div');
         squareBox.classList.add('squareBox');
+        squareBox.onmouseleave = ()=>{
+            this._timer = setTimeout(()=>{
+                this._setVisibility('hidden');
+            }, 20);
+        }
 
         mediumPart.append(subRow, squareBox, addColumn);
         
         let root = document.createElement('div');
         root.append(subColumn, mediumPart, addRow);
         
-        this.component.append(root);
+        this._component.append(root);
         this._renderBox();
       }
 
-      x = defaultValue.x;
-      y = defaultValue.y;
+      _x = defaultValue.x;
+      _y = defaultValue.y;
 }
 
 customElements.define("square-component", SquareComponent);
-
-function changeDisplay() {
-    let prevElement = document.elementFromPoint(coords.x, coords.y);
-    setTimeout(()=>{
-        let elementOnCursor = document.elementFromPoint(coords.x, coords.y);
-        if(elementOnCursor.classList[0]!=='modSquare' && elementOnCursor.classList[0]!== 'squareBox' && elementOnCursor.classList[0]!== 'square') 
-            display = 'none';
-        else
-            if(elementOnCursor.classList[0]==='modSquare'){
-                if(!prevElement.classList[0])
-                    display = 'none';
-                else
-                    display = 'flex';
-            }
-            else
-                if(elementOnCursor.classList[0]==='squareBox'){
-                    if(!prevElement.classList[0])
-                    display = 'none';
-                else
-                    display = 'flex';
-                }
-                else
-                    display = 'flex';
-            setDisplay(display);
-    },100);
-}
-
-function setDisplay(display) {
-    document.getElementById('subColumn').style.display = componentInfo.y-1 ? display : 'none';
-    document.getElementById('subRow').style.display = componentInfo.x-1 ? display : 'none';
-}
