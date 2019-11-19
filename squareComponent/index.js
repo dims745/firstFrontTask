@@ -16,8 +16,8 @@ class SquareComponent extends HTMLElement {
             let n;
             if(action === 'sub') n = -1;
             else n = 1;
-            if(target === 'column') this._x += n;
-            else this._y += n;
+            if(target === 'column') this._componentInfo.x += n;
+            else this._componentInfo.y += n;
             this._setPosition(0, 0);
             this._renderBox();
         }
@@ -31,8 +31,8 @@ class SquareComponent extends HTMLElement {
     }
 
     _setVisibility(value) {
-        let valueRow = this._y === 1 ? 'hidden' : value;
-        let valueColumn = this._x === 1 ? 'hidden' : value;
+        let valueRow = this._componentInfo.y === 1 ? 'hidden' : value;
+        let valueColumn = this._componentInfo.x === 1 ? 'hidden' : value;
         this._component.querySelector('.sub.row').style.visibility = valueRow;
         this._component.querySelector('.sub.column').style.visibility = valueColumn;
     }
@@ -52,9 +52,9 @@ class SquareComponent extends HTMLElement {
         let squareBox = this._component.querySelector('.squareBox');
         squareBox.innerHTML = '';
         let gridTC;
-        for(let i = 0; i < this._y; i++) {
+        for(let i = 0; i < this._componentInfo.y; i++) {
             gridTC = '';
-            for(let j = 0; j < this._x; j++) {
+            for(let j = 0; j < this._componentInfo.x; j++) {
                 let square = document.createElement('div');
                 square.classList.add('square');
                 square.onmouseover = ()=> this._setPosition(j, i);
@@ -94,8 +94,11 @@ class SquareComponent extends HTMLElement {
         this._renderBox();
       }
 
-      _x = defaultValue.x;
-      _y = defaultValue.y;
+      _componentInfo = {
+        x : defaultValue.x,
+        y : defaultValue.y,
+        
+      }
 }
 
 customElements.define("square-component", SquareComponent);
