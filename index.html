@@ -4,48 +4,9 @@
         <title>
             1
         </title>
-        <link rel="stylesheet" href="./index.css"/>
     </head>
-    <body onload="renderComponent('nothing')" onmousemove="coords.setCoords()">
-        <div
-                id="squareComponent"
-                onload="renderComponent('nothing')"
-                onmousemove="coords.setCoords()">
-
-                <div
-                    id="subColumn"
-                    class="modSquare sub"
-                    onclick="renderComponent('sub', 'column')"
-                    onmouseout="changeDisplay()"
-                    onmouseover="changeDisplay()"
-                >-</div>
-
-                <div
-                    id="subRow"
-                    class="modSquare sub"
-                    onclick="renderComponent('sub', 'row')"
-                    onmouseout="changeDisplay()"
-                    onmouseover="changeDisplay()"
-                >-</div>
-
-                <div
-                    id="addColumn"
-                    class="modSquare add"
-                    onclick="renderComponent('add', 'column')"
-                    onmouseout="changeDisplay()"
-                    onmouseover="changeDisplay()"
-                >+</div>
-
-                <div
-                    id="addRow"
-                    class="modSquare add"
-                    onclick="renderComponent('add', 'row')"
-                    onmouseout="changeDisplay()"
-                    onmouseover="changeDisplay()"
-                >+</div>
-
-                <div class="squareBox" onmouseout="changeDisplay()"></div>
-            </div>
-        <script src="index.js"></script>
+    <body>
+        <square-component></square-component>
+        <script src="./squareComponent/index.js"></script>
     </body>
 </html>

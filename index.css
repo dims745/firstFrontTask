@@ -1,7 +1,4 @@
 .squareBox {
-    position: relative;
-    top: 60px;
-    left: 60px;
     display: grid;
     border: 1px solid gray;
     width: fit-content;
@@ -16,7 +13,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
     width: 50px;
     height: 50px;
     color: cornsilk;
@@ -35,22 +31,16 @@
     background-color: #f6c052;
 }
 .sub {
-    transition: background-color 0.5s, left 0.3s, top 0.3s;
-    display: none;
+    transition: margin 0.5s, left 0.3s, top 0.3s;
     background-color:#b22901;
+    visibility: hidden;
 }
 .sub:hover {
     background-color: #ca4c49;
 }
-#addColumn {
-    top: 68px;
+.medium {
+    display: flex;
 }
-#addRow {
-    left: 68px;
-}
-#subColumn {
-    top: 14px;
-}
-#subRow {
-    left: 14px;
+.add.row {
+    margin-left: 54px;
 }
