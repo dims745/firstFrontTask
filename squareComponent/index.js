@@ -18,7 +18,8 @@ class SquareComponent extends HTMLElement {
             else n = 1;
             if(target === 'column') this._componentInfo.x += n;
             else this._componentInfo.y += n;
-            this._setPosition(0, 0);
+            this._setPosition(
+                this._componentInfo.currentPositionX-1 , this._componentInfo.currentPositionY-1);
             this._renderBox();
         }
         elem.onmouseenter = ()=>{
@@ -37,7 +38,9 @@ class SquareComponent extends HTMLElement {
         this._component.querySelector('.sub.column').style.visibility = valueColumn;
     }
 
-    _setPosition(x,y){
+    _setPosition(x, y){
+        this._componentInfo.currentPositionX = x;
+        this._componentInfo.currentPositionY = y;
         let square = this._component.querySelector('.square');
         let margin = parseInt(getComputedStyle(square).margin);
         let subRow = this._component.querySelector('.sub.row');
@@ -97,7 +100,8 @@ class SquareComponent extends HTMLElement {
       _componentInfo = {
         x : defaultValue.x,
         y : defaultValue.y,
-        
+        currentPositionX : 0,
+        currentPositionY : 0
       }
 }
 
