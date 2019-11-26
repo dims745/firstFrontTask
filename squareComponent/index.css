@@ -1,7 +1,7 @@
+
 .squareBox {
-    display: grid;
+    display: flex;
     border: 1px solid gray;
-    width: fit-content;
 }
 .square {
     width: 50px;
@@ -40,6 +40,7 @@
 }
 .medium {
     display: flex;
+    width: fit-content;
 }
 .add.row {
     margin-left: 54px;
