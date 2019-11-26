@@ -21,7 +21,8 @@ class SquareComponent extends HTMLElement {
                     this._componentInfo.currentPositionX
             );
             this._setPosition(
-                this._componentInfo.currentPositionX-1 , this._componentInfo.currentPositionY-1);
+                this._componentInfo.currentPositionX - (target==='row' ? 0 : 1) , this._componentInfo.currentPositionY - (target==='column' ? 0 : 1));
+            this._setVisibility('hidden');
         }
         elem.onmouseenter = ()=>{
             clearTimeout(this._timer);
@@ -38,11 +39,11 @@ class SquareComponent extends HTMLElement {
             if(action === 'add') {
                 this._componentInfo.y++;
                 let column = document.createElement('div');
-                column.classList.add('y'+this._componentInfo.y);
+                column.classList.add('y' + this._componentInfo.y);
                 for(let j = 0; j < squareBox.children[0].children.length; j++) {
                     let square = document.createElement('div');
                     square.classList.add('square', 'x'+j);
-                    square.onmouseover = (event)=> this._calculatePosition(event);
+                    square.onmouseover = this._componentInfo.squareAction;
                     column.append(square);
                 }
                 squareBox.append(column);
@@ -50,13 +51,12 @@ class SquareComponent extends HTMLElement {
                 squareBox.removeChild(squareBox.children[this._componentInfo.currentPositionX]);
                 this._componentInfo.y--;
             }
-        }
-        else {
+        } else {
             for(let i = 0; i < squareBox.children.length; i++){
                 if(action === 'add'){
                     let square = document.createElement('div');
                     square.classList.add('square', 'x' + this._componentInfo.y);
-                    square.onmouseover = (event)=> this._calculatePosition(event);
+                    square.onmouseover = this._componentInfo.squareAction;
                     squareBox.children[i].append(square);
                 } else {
                     squareBox.children[i]
@@ -73,8 +73,12 @@ class SquareComponent extends HTMLElement {
         let squareBox = this._component.querySelector('.squareBox');
         let valueRow = squareBox.children[0].children.length === 1 ? 'hidden' : value;
         let valueColumn = squareBox.children.length === 1 ? 'hidden' : value;
-        this._component.querySelector('.sub.row').style.visibility = valueRow;
-        this._component.querySelector('.sub.column').style.visibility = valueColumn;
+        let subRow = this._component.querySelector('.sub.row');
+        let subColumn = this._component.querySelector('.sub.column');
+        subRow.style.transition = valueRow === 'hidden' ? 'none' : 'margin 0.5s';
+        subColumn.style.transition = valueColumn === 'hidden' ? 'none' : 'margin 0.5s';
+        subColumn.style.visibility = valueColumn;
+        subRow.style.visibility = valueRow;
     }
 
     _calculatePosition(event){
@@ -92,15 +96,17 @@ class SquareComponent extends HTMLElement {
     }
 
     _setPosition(x, y){
+        x = x === -1 ? 0 : x;
+        y = y === -1 ? 0 : y;
         this._componentInfo.currentPositionX = x;
         this._componentInfo.currentPositionY = y;
         let square = this._component.querySelector('.square');
         let margin = parseInt(getComputedStyle(square).margin);
         let subRow = this._component.querySelector('.sub.row');
         let subColumn = this._component.querySelector('.sub.column');
+        subColumn.style.marginLeft = (x + 1) * (square.offsetWidth + margin * 2) + 2 + 'px';
         subRow.style.marginTop = y * (square.offsetHeight + margin) + 'px';
         subColumn.style.marginLeft = (x + 1) * (square.offsetWidth + margin * 2) + 2 + 'px';
-        this._setVisibility('visible');
     }
 
     _renderBox(){
@@ -111,7 +117,7 @@ class SquareComponent extends HTMLElement {
             for(let j = 0; j < this._componentInfo.x; j++) {
                 let square = document.createElement('div');
                 square.classList.add('square', 'x'+j);
-                square.onmouseover = (event)=> this._calculatePosition(event);
+                square.onmouseover = this._componentInfo.squareAction;
                 squareColumn.append(square);
             }
             squareBox.append(squareColumn);
@@ -127,10 +133,8 @@ class SquareComponent extends HTMLElement {
         let addColumn = this._createModSquare('add', 'column');
         let subRow = this._createModSquare('sub', 'row');
         let addRow = this._createModSquare('add', 'row');
-
         let mediumPart = document.createElement('div');
         mediumPart.classList.add('medium');
-
         let squareBox = document.createElement('div');
         squareBox.classList.add('squareBox');
         squareBox.onmouseleave = ()=>{
@@ -138,9 +142,7 @@ class SquareComponent extends HTMLElement {
                 this._setVisibility('hidden');
             }, 0);
         }
-
         mediumPart.append(subRow, squareBox, addColumn);
-        
         let root = document.createElement('div');
         root.append(subColumn, mediumPart, addRow);
         root.classList.add('root');
@@ -152,7 +154,11 @@ class SquareComponent extends HTMLElement {
         x : defaultValue.x,
         y : defaultValue.y,
         currentPositionX : 0,
-        currentPositionY : 0
+        currentPositionY : 0,
+        squareAction: (event)=>{
+            this._calculatePosition(event);
+            this._setVisibility('visible');
+        }
       }
 }
 
