@@ -32,7 +32,7 @@ class SquareComponent extends HTMLElement {
         return elem;
     }
 
-    _modifyBox(action, target, n){
+    _modifyBox(action, target){
         let squareBox = this._component.querySelector('.squareBox');
         if(target === 'column') {
             if(action === 'add') {
@@ -70,8 +70,9 @@ class SquareComponent extends HTMLElement {
     }
 
     _setVisibility(value) {
-        let valueRow = this._componentInfo.y === 1 ? 'hidden' : value;
-        let valueColumn = this._componentInfo.x === 1 ? 'hidden' : value;
+        let squareBox = this._component.querySelector('.squareBox');
+        let valueRow = squareBox.children[0].children.length === 1 ? 'hidden' : value;
+        let valueColumn = squareBox.children.length === 1 ? 'hidden' : value;
         this._component.querySelector('.sub.row').style.visibility = valueRow;
         this._component.querySelector('.sub.column').style.visibility = valueColumn;
     }
@@ -103,7 +104,6 @@ class SquareComponent extends HTMLElement {
     }
 
     _renderBox(){
-        this._setVisibility('hidden');
         let squareBox = this._component.querySelector('.squareBox');
         for(let i = 0; i < this._componentInfo.y; i++) {
             let squareColumn = document.createElement('div');
@@ -116,6 +116,7 @@ class SquareComponent extends HTMLElement {
             }
             squareBox.append(squareColumn);
         }
+        this._setVisibility('hidden');
     }
 
     connectedCallback() {
