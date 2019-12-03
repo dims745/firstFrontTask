@@ -1,7 +1,7 @@
 const defaultValue = {
     x: 4,
     y: 4
-}
+};
 
 class SquareComponent extends HTMLElement {
 
@@ -9,27 +9,23 @@ class SquareComponent extends HTMLElement {
     _timer;
 
     _createModSquare(action, target) {
-        let elem = document.createElement('div');
+        let elem = document.createElement('button');
         elem.classList.add('modSquare', action, target);
         elem.innerHTML = action === 'sub' ? '-' : '+';
-        elem.onclick = ()=>{
-            this._modifyBox(
-                action,
-                target,
-                target==='row' ?
-                    this._componentInfo.currentPositionY :
-                    this._componentInfo.currentPositionX
-            );
+        elem.onclick = () => {
+            this._modifyBox(action, target);
             this._setPosition(
-                this._componentInfo.currentPositionX - (target==='row' ? 0 : 1) , this._componentInfo.currentPositionY - (target==='column' ? 0 : 1));
+                this._componentInfo.currentPositionX - (target==='row' ? 0 : 1) ,
+                this._componentInfo.currentPositionY - (target==='column' ? 0 : 1)
+            );
             this._setVisibility('hidden');
-        }
-        elem.onmouseenter = ()=>{
+        };
+        elem.onmouseenter = () => {
             clearTimeout(this._timer);
-        }
-        elem.onpointerleave = ()=>{
+        };
+        elem.onpointerleave = () => {
             this._setVisibility('hidden');
-        }
+        };
         return elem;
     }
 
@@ -37,34 +33,42 @@ class SquareComponent extends HTMLElement {
         let squareBox = this._component.querySelector('.squareBox');
         if(target === 'column') {
             if(action === 'add') {
-                this._componentInfo.y++;
-                let column = document.createElement('div');
-                column.classList.add('y' + this._componentInfo.y);
-                for(let j = 0; j < squareBox.children[0].children.length; j++) {
-                    let square = document.createElement('div');
-                    square.classList.add('square', 'x'+j);
-                    square.onmouseover = this._componentInfo.squareAction;
-                    column.append(square);
-                }
-                squareBox.append(column);
+                this._addColumn(squareBox);
             } else {
                 squareBox.removeChild(squareBox.children[this._componentInfo.currentPositionX]);
                 this._componentInfo.y--;
             }
         } else {
-            for(let i = 0; i < squareBox.children.length; i++){
-                if(action === 'add'){
-                    let square = document.createElement('div');
-                    square.classList.add('square', 'x' + this._componentInfo.y);
-                    square.onmouseover = this._componentInfo.squareAction;
-                    squareBox.children[i].append(square);
-                } else {
-                    squareBox.children[i]
-                        .removeChild(
-                            squareBox.children[i].children[this._componentInfo.currentPositionY]
-                        );
-                    this._componentInfo.x--;
-                }
+            this._modifyRow(squareBox, action);
+        }
+    }
+
+    _addColumn(squareBox) {
+        this._componentInfo.y++;
+        let column = document.createElement('div');
+        column.classList.add('y' + this._componentInfo.y);
+        for(let j = 0; j < squareBox.children[0].children.length; j++) {
+            let square = document.createElement('div');
+            square.classList.add('square', 'x'+j);
+            square.onmouseover = this._componentInfo.squareAction;
+            column.append(square);
+        }
+        squareBox.append(column);
+    }
+
+    _modifyRow(squareBox, action) {
+        for(let i = 0; i < squareBox.children.length; i++){
+            if(action === 'add'){
+                let square = document.createElement('div');
+                square.classList.add('square', 'x' + this._componentInfo.y);
+                square.onmouseover = this._componentInfo.squareAction;
+                squareBox.children[i].append(square);
+            } else {
+                squareBox.children[i]
+                    .removeChild(
+                        squareBox.children[i].children[this._componentInfo.currentPositionY]
+                    );
+                this._componentInfo.x--;
             }
         }
     }
@@ -85,14 +89,14 @@ class SquareComponent extends HTMLElement {
         let square = event.target;
         let parent = square.parentElement;
         let gParent = parent.parentElement;
-        let i = 0, j = 0;
-        for(; i < parent.children.length; i++) {
-            if(parent.children[i] === square)break;
+        let y = 0, x = 0;
+        for(let i = 0; i < parent.children.length; i++) {
+            if(parent.children[i] === square) y = i;
         }
-        for(; j < gParent.children.length; j++) {
-            if(gParent.children[j] === parent)break;
+        for(let j = 0; j < gParent.children.length; j++) {
+            if(gParent.children[j] === parent) x = j;
         }
-        this._setPosition(j, i);
+        this._setPosition(x, y);
     }
 
     _setPosition(x, y){
@@ -128,7 +132,7 @@ class SquareComponent extends HTMLElement {
     connectedCallback() {
         this._component = this.attachShadow({mode: 'closed'});
         this.objectUnderMouse = this._component;
-        this._component.innerHTML = `<link rel="stylesheet" href="./squareComponent/index.css"/>`;
+        this._component.innerHTML = '<link rel="stylesheet" href="./squareComponent/index.css"/>';
         let subColumn = this._createModSquare('sub', 'column');
         let addColumn = this._createModSquare('add', 'column');
         let subRow = this._createModSquare('sub', 'row');
@@ -141,25 +145,25 @@ class SquareComponent extends HTMLElement {
             this._timer = setTimeout(()=>{
                 this._setVisibility('hidden');
             }, 0);
-        }
+        };
         mediumPart.append(subRow, squareBox, addColumn);
         let root = document.createElement('div');
         root.append(subColumn, mediumPart, addRow);
         root.classList.add('root');
         this._component.append(root);
         this._renderBox();
-      }
+    }
 
       _componentInfo = {
-        x : defaultValue.x,
-        y : defaultValue.y,
-        currentPositionX : 0,
-        currentPositionY : 0,
-        squareAction: (event)=>{
-            this._calculatePosition(event);
-            this._setVisibility('visible');
-        }
+          x : defaultValue.x,
+          y : defaultValue.y,
+          currentPositionX : 0,
+          currentPositionY : 0,
+          squareAction: (event)=>{
+              this._calculatePosition(event);
+              this._setVisibility('visible');
+          }
       }
 }
 
-customElements.define("square-component", SquareComponent);
+customElements.define('square-component', SquareComponent);

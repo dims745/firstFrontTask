@@ -1,0 +1,24 @@
+{
+  "name": "task_1",
+  "version": "1.0.0",
+  "description": "none",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dims745/firstFrontTask.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dims745/firstFrontTask/issues"
+  },
+  "homepage": "https://github.com/dims745/firstFrontTask#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1"
+  }
+}
