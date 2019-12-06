@@ -106,9 +106,9 @@ class SquareComponent extends HTMLElement {
         this._setPosition(x, y);
     }
 
-    _setPosition(x, y){
-        x = x === -1 ? 0 : x;
-        y = y === -1 ? 0 : y;
+    _setPosition(...coords){
+        const x = coords[0] === -1 ? 0 : coords[0];
+        const y = coords[1] === -1 ? 0 : coords[1];
         this._componentInfo.currentPositionX = x;
         this._componentInfo.currentPositionY = y;
         let square = this._component.querySelector('.square');
